@@ -14,4 +14,12 @@ impl Graph {
             e: e,
         }
     }
+    pub fn adjoint_list(&self) -> Vec<Vec<usize>> {
+        let mut res = vec![vec![]; self.n];
+        for &(u, v) in &self.e {
+            res[u].push(v);
+            res[v].push(u);
+        }
+    res
+    }
 }
