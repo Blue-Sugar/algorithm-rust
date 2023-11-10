@@ -1,3 +1,5 @@
+mod weighted_digraph;
+
 #[allow(unused)]
 pub struct Graph {
     // size of graph (|V|)
@@ -51,4 +53,5 @@ impl Graph {
         }
         res
     }
+
 }
