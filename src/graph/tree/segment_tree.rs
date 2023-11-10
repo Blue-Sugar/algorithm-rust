@@ -36,6 +36,7 @@ impl<S, T> SegmentTree<S, T>
 where
     T: Monoid<S>,
 {
+    // Σ[l, r) a_i 
     pub fn find(&self, l: usize, r: usize) -> T {
         assert!(l <= r && r <= self.size);
         if l == r {
