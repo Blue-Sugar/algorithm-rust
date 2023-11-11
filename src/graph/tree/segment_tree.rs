@@ -1,14 +1,17 @@
+#[allow(unused)]
 pub trait Monoid<S> {
     fn op(&self, rhs: &Self) -> Self;
     fn e() -> Self;
 }
 
+#[allow(unused)]
 pub struct SegmentTree<S, T> {
     data: Vec<T>,
     size: usize,
     phantom: std::marker::PhantomData<S>,
 }
 
+#[allow(unused)]
 impl<S, T> SegmentTree<S, T>
 where
     T: Monoid<S> + Clone,
@@ -32,6 +35,7 @@ where
     }
 }
 
+#[allow(unused)]
 impl<S, T> SegmentTree<S, T>
 where
     T: Monoid<S>,
