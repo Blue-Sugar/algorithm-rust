@@ -27,6 +27,7 @@ impl_primitive_integer_capacity!(i32, std::i32::MAX);
 impl_primitive_integer_capacity!(i64, std::i64::MAX);
 impl_primitive_integer_capacity!(isize, std::isize::MAX);
 
+#[allow(unused)]
 #[derive(Clone, Copy)]
 struct Edge<Cap> {
     to_: u32,
@@ -34,6 +35,7 @@ struct Edge<Cap> {
     cap_: Cap,
 }
 
+#[allow(unused)]
 impl<Cap> Edge<Cap> {
     fn new(to: usize, inv: usize, cap: Cap) -> Self {
         Edge {
@@ -50,6 +52,7 @@ impl<Cap> Edge<Cap> {
     }
 }
 
+#[allow(unused)]
 impl<Cap: MaxFlowCapacity> Edge<Cap> {
     fn add(&mut self, cap: Cap) {
         self.cap_ = self.cap_ + cap;
@@ -74,6 +77,7 @@ pub struct EdgeIndex {
     y: usize,
 }
 
+#[allow(unused)]
 impl<Cap: MaxFlowCapacity> MaxFlowGraph<Cap> {
     pub fn new(size: usize) -> Self {
         Self {
