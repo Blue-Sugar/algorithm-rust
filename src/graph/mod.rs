@@ -10,6 +10,8 @@ pub struct Graph {
     e: Vec<(usize, usize)>,
 }
 
+use itertools::Itertools;
+use proconio::{input, marker::Usize1};
 #[allow(unused)]
 impl Graph {
     pub fn new(n: usize, e: Vec<(usize, usize)>) -> Graph {
@@ -56,4 +58,34 @@ impl Graph {
         res
     }
 
+    // [a, b, c, ..] \in res means that e[a], e[b], ... is one of spanning tree
+    fn spanning_tree(&self) -> Vec<Vec<usize>> {
+        let mut res = vec![];
+        'lo: for ed in (0..self.e.len()).combinations(self.n - 1) {
+            let mut adjoint_list = vec![vec![]; self.n];
+            for &i in &ed {
+                let u = self.e[i].0;
+                let v = self.e[i].1;
+                adjoint_list[u].push(v);
+                adjoint_list[v].push(u);
+            }
+            let mut used = vec![false; self.n];
+            let mut que = std::collections::VecDeque::new();
+            que.push_back(0);
+            used[0] = true;
+            while let Some(u) = que.pop_front() {
+                for &v in &adjoint_list[u] {
+                    if used[v] {
+                        continue
+                    }
+                    used[v] = true;
+                    que.push_back(v);
+                }
+            }
+            if used.iter().all(|x| *x) {
+                res.push(ed);
+            }
+        }
+        res
+    }
 }
