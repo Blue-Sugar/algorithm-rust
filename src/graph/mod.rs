@@ -11,7 +11,6 @@ pub struct Graph {
 }
 
 use itertools::Itertools;
-use proconio::{input, marker::Usize1};
 #[allow(unused)]
 impl Graph {
     pub fn new(n: usize, e: Vec<(usize, usize)>) -> Graph {
