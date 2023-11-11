@@ -58,6 +58,8 @@ impl Graph {
     }
 
     // [a, b, c, ..] \in res means that e[a], e[b], ... is one of spanning tree
+    // O(n * eCn) (e = |E|)
+    // AC ABC328-E
     fn spanning_tree(&self) -> Vec<Vec<usize>> {
         let mut res = vec![];
         'lo: for ed in (0..self.e.len()).combinations(self.n - 1) {
