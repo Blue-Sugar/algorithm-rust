@@ -1,6 +1,5 @@
-mod weighted_digraph;
-mod max_flow_graph;
 mod tree;
+mod weighted_graph;
 
 #[allow(unused)]
 pub struct Graph {
