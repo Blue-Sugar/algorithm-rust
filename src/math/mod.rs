@@ -1,3 +1,5 @@
+mod modint;
+
 #[allow(unused)]
 // 0 <= x % m < m
 fn safe_mod(x: isize, m: isize) -> isize {
