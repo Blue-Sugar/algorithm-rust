@@ -1,4 +1,5 @@
 mod modint;
+mod algebra;
 
 #[allow(unused)]
 // 0 <= x % m < m

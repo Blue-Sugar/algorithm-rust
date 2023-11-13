@@ -1,3 +1,5 @@
+mod max_flow_graph;
+
 #[allow(unused)]
 struct WeightedDigraph {
     // size, |V|

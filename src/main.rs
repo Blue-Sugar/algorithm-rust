@@ -1,5 +1,6 @@
 mod graph;
-mod disjoint_set_union;
+mod digraph;
+mod set;
 mod math;
 
 fn main() {
