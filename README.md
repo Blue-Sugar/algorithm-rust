@@ -8,6 +8,9 @@
 1. tree
     segment-tree
     binary-index-tree
+2. grid
+    mod
+    valued-grid
 
 ## math
 1. algebra

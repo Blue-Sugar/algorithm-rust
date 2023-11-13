@@ -1,4 +1,5 @@
 mod tree;
+mod grid;
 
 #[allow(unused)]
 pub struct Graph {
