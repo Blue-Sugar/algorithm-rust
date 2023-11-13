@@ -9,7 +9,6 @@
     segment-tree
     binary-index-tree
 2. grid
-    mod
     valued-grid
 
 ## math
