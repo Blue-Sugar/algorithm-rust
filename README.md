@@ -1,8 +1,9 @@
 # 競プロ用ライブラリ
 
 ## digraph
-1. max-flow-graph (nonunderstand)
-2. floyd-warshall algorithm
+1. weighted-graph
+    1. max-flow-graph
+    2. floyd-warshall
 
 ## graph
 1. tree
