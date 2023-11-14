@@ -1,6 +1,8 @@
 mod modint;
 mod algebra;
 mod prime_factorization;
+mod gcd;
+mod eratosthenes;
 
 #[allow(unused)]
 // 0 <= x % m < m
@@ -26,12 +28,6 @@ fn pow_mod(x: usize, mut n: usize, m: usize) -> usize {
         n >>= 1;
     }
     res % m
-}
-
-#[allow(unused)]
-fn gcd(a: usize, b: usize) -> usize {
-    if b == 0 {return a;}
-    gcd(b, a % b)
 }
 
 #[allow(unused)]
