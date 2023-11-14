@@ -1,5 +1,6 @@
 mod modint;
 mod algebra;
+mod prime_factorization;
 
 #[allow(unused)]
 // 0 <= x % m < m
