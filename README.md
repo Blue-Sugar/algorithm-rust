@@ -16,8 +16,8 @@
 
 ## math
 1. algebra
-    group (unimplement)
-    monoid (unimplement)
+    1. group (unimplement)
+    2. monoid (unimplement)
 2. erathosthenes
 3. gcd, lcm
 4. modint
