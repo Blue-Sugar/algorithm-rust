@@ -7,23 +7,27 @@
 
 ## graph
 1. tree
-    segment-tree
-    binary-index-tree
+    1. segment-tree
+    2. binary-index-tree
+    3. parent
 2. grid
-    valued-grid
+    1. valued-grid
+    2. neighbor
 
 ## math
 1. algebra
     group (unimplement)
     monoid (unimplement)
-2. GCD, LCM, prime number, prime factrization, eratosthenes (unimplement)
-3. modint
-4. modint (finite field) (unimplement)
+2. erathosthenes
+3. gcd, lcm
+4. modint
+    1. finite-field (unimplement)
+5. prime_factorization
 
 ## set
 1. disjoint-set-union (potential unimplement)
-2. sorted-set
-3. multisorted-set
+2. sorted-set (unimplement)
+3. multisorted-set (unimplement)
 
 ## string
 1. padindrome
