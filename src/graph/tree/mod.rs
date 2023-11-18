@@ -1,5 +1,6 @@
 mod binary_index_tree;
 mod segment_tree;
+mod union_find;
 
 #[allow(unused)]
 struct RootedTree {
