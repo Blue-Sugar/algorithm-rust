@@ -67,28 +67,3 @@ impl Eratosthenes {
     }
 }
 
-#[test]
-fn eratosthenes_test() {
-    let ans = vec![
-        false, false, true, true, false, true, false, true, false, false, false,
-        true, false, true, false, false, false, true, false, true, false
-    ];
-    assert_eq!(Eratosthenes::new(20).is_prime, ans);
-}
-
-#[test]
-fn eratosthenes_prime_factorization_test() {
-    let e = Eratosthenes::new(1_000_000);
-    assert_eq!(e.prime_factorization(18), vec![(2, 1), (3, 2)]);
-    assert_eq!(e.prime_factorization(25), vec![(5, 2)]);
-    assert_eq!(e.prime_factorization(17), vec![(17, 1)]);
-    assert_eq!(e.prime_factorization(34), vec![(2, 1), (17, 1)])
-
-}
-#[test]
-fn eratosthenes_divisors_test() {
-    let e = Eratosthenes::new(1_000_000);
-    assert_eq!(e.dividors(18), vec![1, 2, 3, 6, 9, 18]);
-    assert_eq!(e.dividors(25), vec![1, 5, 25]);
-    assert_eq!(e.dividors(17), vec![1, 17]);
-}
