@@ -26,6 +26,18 @@ impl<const M: usize> ModUsize<M> {
         }
         res
     }   
+
+    pub fn inv(&self) -> Option<ModUsize<M>> {
+        if gcd(self.value, M) != 1 {
+            return None;
+        }
+        let (x, mut y) = axby(M, self.value);
+        y %= M as isize;
+        if y < 0 {
+            y += M as isize;
+        }
+        Some(ModUsize::<M>::new(y as usize))
+    }
 }
 
 impl<const M: usize> Add for ModUsize<M> {
@@ -45,4 +57,27 @@ impl<const M: usize> Mul for ModUsize<M> {
     fn mul(self, rhs: Self) -> Self {
         ModUsize { value: self.value * rhs.value % M }
     }
+}
+
+#[allow(unused)]
+// O(log(max{a, b}))
+// ax + by = d (d = gcd(a, b)), so return is (x, y)
+fn axby(mut a: usize, mut b: usize) -> (isize, isize) {
+    let mut history = vec![];
+    while b > 0 {
+        history.push((a, b));
+        (a, b) = (b, a % b);
+    }
+    let (mut x, mut y) = (1, 0);
+    for &(a, b) in history.iter().rev() {
+        (x, y) = (y, x - a as isize / b as isize * y);
+    }
+    (x, y)
+}
+
+//O(log(max{a, b}))
+#[allow(unused)]
+fn gcd(a: usize, b: usize) -> usize {
+    if b == 0 {return a;}
+    gcd(b, a % b)
 }
