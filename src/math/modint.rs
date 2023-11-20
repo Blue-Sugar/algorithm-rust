@@ -2,7 +2,7 @@ use std::ops::{Add, Sub, Mul};
 
 #[derive(Clone, Copy)]
 #[allow(unused)]
-struct ModUsize<const M: usize> {
+pub struct ModUsize<const M: usize> {
     value: usize,
 }
 
