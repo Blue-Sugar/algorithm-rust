@@ -3,7 +3,7 @@ mod grid;
 
 #[allow(unused)]
 pub struct Graph {
-    // size of graph (|V|)
+    // order of graph (|V|)
     n: usize,
     // adjoint list, i.e. v \in e[u] means there is a path between u and v.
     e: Vec<(usize, usize)>,
@@ -18,6 +18,15 @@ impl Graph {
             e: e,
         }
     }
+
+    fn order(&self) -> usize {
+        self.n
+    }
+
+    fn size(&self) -> usize {
+        self.e.len()
+    }
+
     pub fn adjoint_list(&self) -> Vec<Vec<usize>> {
         let mut res = vec![vec![]; self.n];
         for &(u, v) in &self.e {
@@ -26,6 +35,48 @@ impl Graph {
         }
     res
     }
+
+    // O(V^2 + E)
+    pub fn incidence_matrix(&self) -> Vec<Vec<usize>> {
+        let mut res = vec![vec![0; self.n]; self.n];
+        for &(u, v) in &self.e {
+            res[u][v] += 1;
+            res[v][u] += 1;
+        }
+        res
+    }
+
+    // O(E)
+    fn is_loop(&self) -> bool {
+        self.e.iter().all(|&(u, v)| u == v)
+    }
+
+    // O(E logE)
+    fn is_parallel(&self) -> bool {
+        let mut al = self.adjoint_list();
+        for i in 0..self.n {
+            al[i].sort();
+        }
+        al.iter().all(|v| 
+            v.windows(2).all(|v| v[0] == v[1])
+        )
+    }
+
+    // O(E logE)
+    fn is_simple(&self) -> bool {
+        !self.is_loop() && !self.is_parallel()
+    }
+
+    // O(V^2 + E)
+    fn is_complete(&self) -> bool {
+        let im = self.incidence_matrix();
+        im.iter().flatten().all(|cnt| *cnt > 0)
+    }
+
+    fn is_empty(&self) -> bool {
+        self.e.len() == 0
+    }
+
     // O(|V| + |E|)
     // ABC327-D accept
     fn is_biparate(&self) -> bool {
