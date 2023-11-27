@@ -25,3 +25,22 @@ impl Monoid<i128> for RangeMaxQuery {
         lhs.max(rhs)
     }
 }
+
+#[allow(unused)]
+struct RangeGCDQuery {}
+
+#[allow(unused)]
+fn gcd(a: u128, b: u128) -> u128 {
+    if b == 0 {return a;}
+    gcd(b, a % b)
+}
+
+#[allow(unused)]
+impl Monoid<u128> for RangeGCDQuery {
+    fn e() -> u128 {
+        0
+    }
+    fn op(lhs: u128, rhs: u128) -> u128 {
+        gcd(lhs, rhs)
+    }
+}
