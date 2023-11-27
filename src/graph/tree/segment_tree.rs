@@ -1,118 +1,106 @@
-#[allow(unused)]
-pub trait Monoid<S> {
-    fn op(&self, rhs: &Self) -> Self;
-    fn e() -> Self;
-}
+use crate::math::algebra::monoid::Monoid;
+use std::marker::PhantomData;
+
 
 #[allow(unused)]
-pub struct SegmentTree<S, T> {
-    data: Vec<T>,
+struct SegmentTree<S, T> 
+{
+    n: usize,
     size: usize,
-    phantom: std::marker::PhantomData<S>,
+    data: Vec<S>,
+    phantom: PhantomData<T>,
 }
 
 #[allow(unused)]
 impl<S, T> SegmentTree<S, T>
-where
-    T: Monoid<S> + Clone,
+where S: Clone + Copy, T: Monoid<S> 
 {
-    pub fn new(size: usize) -> Self {
-        let size = size.next_power_of_two();
-        Self {
-            data: vec![T::e(); 2 * size],
-            size: size,
-            phantom: std::marker::PhantomData
-        }
-    }
-    pub fn build(a: &[T]) -> Self {
-        let size = a.len().next_power_of_two();
+    fn new(a: &Vec<S>) -> Self {
+        let n = a.len();
+        let size = n.next_power_of_two();
         let mut data = vec![T::e(); 2 * size];
-        data[size..(size + a.len())].clone_from_slice(a);
+        for (i, &a) in a.iter().enumerate() {
+            data[size + i] = a;
+        }
         for i in (1..size).rev() {
-            data[i] = data[2 * i].op(&data[2 * i + 1]);
+            data[i] = T::op(data[2 * i], data[2 * i + 1]);
         }
-        Self { data, size, phantom: std::marker::PhantomData }
-    }
-}
-
-#[allow(unused)]
-impl<S, T> SegmentTree<S, T>
-where
-    T: Monoid<S>,
-{
-    // Σ[l, r) a_i 
-    pub fn find(&self, l: usize, r: usize) -> T {
-        assert!(l <= r && r <= self.size);
-        if l == r {
-            return T::e();
-        }
-        let mut x = l + self.size;
-        let mut y = r + self.size;
-        let mut p = T::e();
-        let mut q = T::e();
-        let data = &self.data;
-        while x < y {
-            if x & 1 == 1 {
-                p = p.op(&data[x]);
-                x += 1;
-            }
-            if y & 1 == 1 {
-                y -= 1;
-                q = data[y].op(&q);
-            }
-            x >>= 1;
-            y >>= 1;
-        }
-        p.op(&q)
+        SegmentTree { n: n, size: size, data: data, phantom: PhantomData }
     }
 
-    // a_x <- v
-    pub fn set_at(&mut self, x: usize, v: T) {
-        assert!(x < self.size);
-        let mut x = x + self.size;
-        let data = &mut self.data;
-        data[x] = v;
-        x >>= 1;
-        while x >= 1 {
-            data[x] = data[2 * x].op(&data[2 * x + 1]);
-            x >>= 1;
+    // a_i <- x
+    fn set_at(&mut self, i: usize, x: S) {
+        self.data[i + self.size] = x;
+        let mut j = (i + self.size) / 2;
+        while j > 0 {
+            self.data[j] = 
+                T::op(self.data[j * 2], self.data[j * 2 + 1]); 
+            j /= 2;
         }
     }
 
-    // l <= j, f(a_j) = true of minimum j
-    pub fn max_right<F>(&mut self, l: usize, f: F) -> usize
-    where
-        F: Fn(&T) -> bool,
-    {
-        assert!(f(&T::e()));
-        if l == self.size {
-            return self.size;
-        }
-        assert!(l <= self.size);
+    // [l, r) \Pi a_i
+    fn find(&self, l: usize, r: usize) -> S {
         let mut l = l + self.size;
-        let mut r = 2 * self.size;
-        let mut s = T::e();
+        let mut r = r + self.size;
+
+        let mut l_ans = T::e();
+        let mut r_ans = T::e();
+
         while l < r {
-            if l & 1 == 1 {
-                let v = s.op(&self.data[l]);
-                if !f(&v) {
-                    while l < self.size {
-                        l *= 2;
-                        let p = s.op(&self.data[l]);
-                        if f(&p) {
-                            s = p;
-                            l += 1;
-                        }
-                    }
-                    return l - self.size;
-                } else {
-                    s = v;
-                }
+            if l % 2 == 1 {
+                l_ans = T::op(l_ans, self.data[l]);
                 l += 1;
             }
-            l >>= 1;
-            r >>= 1;
+            if r % 2 == 1{
+                r -= 1;
+                r_ans = T::op(self.data[r], r_ans);
+            }
+            l /= 2;
+            r /= 2;
         }
-        self.size
+        T::op(l_ans, r_ans)
+    }
+
+    fn all_prod(&self) -> S {
+        self.data[1]
+    }
+
+    // a_p
+    fn get(&self, p: usize) -> S {
+        self.data[self.size + p]
+    }
+
+    // 区間和が条件式を満たす最長の区間 [l, res) の間で満たすとできる。
+    // 条件式は単調でなければならない。
+    // よくわかってない。
+    fn max_right<P>(&self, l: usize, f: P) -> usize
+    where
+        P: Fn(&S) -> bool,
+    {
+        if l == self.n {
+            return self.n;
+        }
+        let mut l = self.size + l;
+        let mut sum = T::e();
+        while {
+            l >>= l.trailing_zeros();
+            let v = T::op(sum, self.data[l]);
+            if !f(&v) {
+                while l < self.size {
+                    l <<= 1;
+                    let v = T::op(sum, self.data[l]);
+                    if f(&v) {
+                        sum = v;
+                        l += 1;
+                    }
+                }
+                return l - self.size;
+            }
+            sum = v;
+            l += 1;
+            l.count_ones() > 1
+        } {}
+        self.n
     }
 }
