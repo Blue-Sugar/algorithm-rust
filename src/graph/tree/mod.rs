@@ -26,20 +26,31 @@ impl RootedTree {
         res
     }
 
-    pub fn parent(&self) -> Vec<usize> {
+    // parent[i] = -1 のとき、それがrootであることを表す。
+    pub fn parent(&self) -> Vec<isize> {
         let adjoint_list = self.adjoint_list();
-        let mut res = vec![self.n; self.n];
+        let mut res = vec![self.n as isize; self.n];
         let mut q = std::collections::VecDeque::new();
         q.push_back(self.root);
-        res[self.root] = self.root;
+        res[self.root] = -1;
 
         while let Some(u) = q.pop_front() {
             for &v in &adjoint_list[u] {
-                if res[v] == self.n {
-                    res[v] = u;
-                    q.push_back(v);
+                if res[v] != self.n as isize {
+                    continue;
                 }
+                res[v] = u as isize;
+                q.push_back(v);
             }
+        }
+        res
+    }
+
+    pub fn children(&self) -> Vec<Vec<usize>> {
+        let mut res = vec![vec![]; self.n];
+        for (i, &p) in self.parent().iter().enumerate() {
+            if p == -1 {continue;}
+            res[p as usize].push(i);
         }
         res
     }
