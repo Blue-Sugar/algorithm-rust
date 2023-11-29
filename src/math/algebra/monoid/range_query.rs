@@ -1,33 +1,27 @@
 use crate::math::algebra::monoid::*;
 
-#[allow(unused)]
-struct RangeMinQuery {}
+
 
 #[allow(unused)]
-impl Monoid<usize> for RangeMinQuery {
+impl Monoid for usize {
     fn e() -> usize {
         std::usize::MAX / 2
     }
-    fn op(lhs: usize, rhs: usize) -> usize {
-        lhs.min(rhs)
+    fn op(&self, rhs: &Self) -> usize {
+        *self.min(rhs)
     }
 }
 
 #[allow(unused)]
-struct RangeMaxQuery {}
-
-#[allow(unused)]
-impl Monoid<i128> for RangeMaxQuery {
+impl Monoid for i128 {
     fn e() -> i128 {
         -1
     }
-    fn op(lhs: i128, rhs: i128) -> i128 {
-        lhs.max(rhs)
+    fn op(&self, rhs: &Self) -> i128 {
+        *self.max(rhs)
     }
 }
 
-#[allow(unused)]
-struct RangeGCDQuery {}
 
 #[allow(unused)]
 fn gcd(a: u128, b: u128) -> u128 {
@@ -36,11 +30,11 @@ fn gcd(a: u128, b: u128) -> u128 {
 }
 
 #[allow(unused)]
-impl Monoid<u128> for RangeGCDQuery {
+impl Monoid for u128 {
     fn e() -> u128 {
         0
     }
-    fn op(lhs: u128, rhs: u128) -> u128 {
-        gcd(lhs, rhs)
+    fn op(&self, rhs: &Self) -> u128 {
+        gcd(*self, *rhs)
     }
 }

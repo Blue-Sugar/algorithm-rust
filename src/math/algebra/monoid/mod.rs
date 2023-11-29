@@ -1,7 +1,7 @@
 mod range_query;
 
 #[allow(unused)]
-pub trait Monoid<S> {
-    fn e() -> S;
-    fn op(lhs: S,rhs: S) -> S;
+pub trait Monoid: Clone + Copy {
+    fn e() -> Self;
+    fn op(&self,rhs: &Self) -> Self;
 }
