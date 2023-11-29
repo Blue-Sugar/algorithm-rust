@@ -3,17 +3,17 @@ mod repeating_decimal;
 #[allow(unused)]
 #[derive(Clone, Copy, Debug)]
 struct Rational {
-    // denom / numer
+    // numer / denom
     // denominator
-    denom: usize,
-    // numerator
     numer: usize,
+    // numerator
+    denom: usize,
 }
 
 #[allow(unused)]
 impl Rational {
-    pub fn new(denom: usize, numer: usize) -> Self {
-        let d = gcd(denom, numer);
+    pub fn new(numer: usize, denom: usize) -> Self {
+        let d = gcd(numer, denom);
         Rational { denom: denom / d, numer: numer / d }
     }
 }
