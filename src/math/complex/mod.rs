@@ -14,6 +14,11 @@ impl Complex {
         let rad = 2.0 * std::f64::consts::PI * numer as f64 / denom as f64;
         Complex::new(rad.cos(), rad.sin())
     }
+
+    fn arg(&self) -> f64 {
+        let res = (self.1).atan2(self.0);
+        (res + 2.0 * std::f64::consts::PI) % (2.0 * std::f64::consts::PI)
+    }
 }
 
 impl Add for Complex {
@@ -37,4 +42,9 @@ impl Mul for Complex {
         let Complex(c, d) = rhs;
         Complex(a * c - b * d, a * d + b * c)
     }
+}
+
+#[allow(unused)]
+pub fn arg_diff(a: f64, b: f64) -> f64 {
+    (a - b).abs().min(2.0 * std::f64::consts::PI - (a - b).abs())
 }

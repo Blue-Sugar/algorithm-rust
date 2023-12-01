@@ -74,4 +74,37 @@ impl RootedTree {
         }
         res
     }
+
+    pub fn diameter(&self) -> usize {
+        let al = self.adjoint_list();
+        let mut used = vec![-1; self.n];
+        let mut que = std::collections::VecDeque::new();
+        que.push_back(0);
+        used[0] = 0;
+        let mut tmp = 0;
+        while let Some(i) = que.pop_front() {
+            tmp = i;
+            for &j in &al[i] {
+                if used[j] >= 0 {
+                    continue;
+                }
+                used[j] = used[i] + 1;
+                que.push_back(j);
+            }
+        }
+        let mut used1 = vec![-1; self.n];
+        let mut que1 = std::collections::VecDeque::new();
+        que1.push_back(tmp);
+        used1[tmp] = 0;
+        while let Some(i) = que1.pop_front() {
+            for &j in &al[i] {
+                if used1[j] >= 0 {
+                    continue;
+                }
+                used1[j] = used1[i] + 1;
+                que1.push_back(j);
+            }
+        }
+        *used1.iter().max().unwrap() as usize
+    }
 }
