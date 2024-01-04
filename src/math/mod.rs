@@ -9,3 +9,4 @@ mod formal_power_series;
 mod regular_polygon;
 mod slope_trick;
 mod finite_field;
+pub mod combinatorics;
