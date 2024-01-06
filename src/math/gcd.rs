@@ -52,3 +52,30 @@ fn chinese_remainder_theorem(
     res as usize
 }
 
+#[allow(unused)]
+fn is_square(x: usize) -> bool {
+    let l = lower_bound(0, 10usize.pow(8),
+        |k| k * k < x
+    );
+    l * l == x
+}
+
+#[allow(unused)]
+// [l, r) がf = trueとなる数字である。
+// f に単調性を課す。
+fn lower_bound<P>(l: usize, ng: usize, f: P) -> usize  
+where P: Fn(&usize) -> bool,
+{ 
+    if !f(&l) {return l;}
+    let mut ok = l;
+    let mut ng = ng;
+    while ng - ok > 1 {
+        let mid = (ok + ng) / 2;
+        if f(&mid) {
+            ok = mid;
+        } else {
+            ng = mid;
+        }
+    }
+    ng
+}
